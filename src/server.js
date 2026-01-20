@@ -11,7 +11,7 @@ const server = async () => {
     const app = App();
 
     app.listen(env.port, () => {
-        console.log(`Auth service running on port ${env.port}`);
+        console.log(`Data service running on port ${env.port}`);
     });
 };
 
