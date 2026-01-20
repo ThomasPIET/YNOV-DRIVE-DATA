@@ -18,6 +18,31 @@ export const userController = {
         }
     },
 
+    editCurrentUser: async (req, res) => {
+        const id = req.body.id
+        const data = {
+            email: req.body.email,
+            name: req.body.name
+        };
+
+        console.log(data.name + data.email + id);
+
+        if (!id || !data) {
+            return res.status(400).json({ status: 400, message: "Missing data" });
+        }
+        try {
+            const user = await userService.editCurrentUser(id, data);
+            if (!user) {
+                return res.status(404).json({ status: 404, message: "User not found" });
+            }
+            return res.status(200).json(user);
+        } catch (error) {
+            return res.status(500).json({status: 500, message: error.message});
+        }
+
+
+    },
+
     createUser: async (req, res) => {
         const data = {
             id: req.body.id,
@@ -36,4 +61,5 @@ export const userController = {
             return res.status(500).json({status: 500, message: error.message});
         }
     }
+
 };
