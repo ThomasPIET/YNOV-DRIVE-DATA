@@ -1,12 +1,20 @@
-import {userRepository} from "../repositories/user.repository.js";
+import { userService } from "../services/user.service.js";
 
 export const userController = {
     getCurrentUser: async (req, res) => {
+        const id = req.params?.id ?? req.body?.id;
+        if (!id) {
+            return res.status(400).json({ status: 400, message: "Missing id" });
+        }
+
         try {
-            const user = await userRepository.getUserById(req.body.id);
-            return res.json(user);
+            const user = await userService.getCurrentUser(id);
+            if (!user) {
+                return res.status(404).json({ status: 404, message: "User not found" });
+            }
+            return res.status(200).json({ status: 200, data: user });
         } catch (error) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(500).json({ status: 500, message: error.message });
         }
     },
 
@@ -17,12 +25,15 @@ export const userController = {
             name: req.body.name
         };
 
+        if (!data.id || !data.email || !data.name) {
+            return res.status(400).json({ status: 400, message: "Missing data" });
+        }
+
         try {
-            const user = await userRepository.createUser(data);
-            return res.json(user);
+            const user = await userService.createUser(data);
+            return res.status(201).json(user);
         } catch (error) {
-            throw new Error('Erreur lors de la création du User' + error.message);
+            return res.status(500).json({status: 500, message: error.message});
         }
     }
-
 };
