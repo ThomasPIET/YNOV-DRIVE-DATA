@@ -10,6 +10,17 @@ export const userService = {
         }
     },
 
+    editCurrentUser: async (id, data) => {
+        if (!data || !id) throw new Error("Missing user data or id");
+
+        try {
+            return await userRepository.editUser(id, data);
+        } catch (error) {
+            throw new Error("Failed to edit user: " + error.message);
+        }
+
+    },
+
     createUser: async (data) => {
         if (!data) throw new Error("Missing user");
 
