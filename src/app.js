@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 
+
+import userRoute from "./routes/user.route.js";
 import { errorHandler } from './middleware/error.middleware.js';
 
 export const App = () => {
@@ -10,6 +12,8 @@ export const App = () => {
     app.use(express.json());
 
     app.use(errorHandler);
+
+    app.use('/api/user/', userRoute)
 
     return app;
 }
