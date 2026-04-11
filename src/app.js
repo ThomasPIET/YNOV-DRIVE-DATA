@@ -11,9 +11,9 @@ export const App = () => {
     app.use(cors());
     app.use(express.json());
 
-    app.use(errorHandler);
-
     app.use('/api/user/', userRoute)
+
+    app.use(errorHandler);
 
     return app;
 }
